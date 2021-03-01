@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp_Backend.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private DataContext _context;
 
@@ -23,8 +21,15 @@ namespace DatingApp_Backend.Controllers
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             var userList = await _context.Users.ToListAsync();
-            return userList;
-        }
+            if (userList.Count > 0)
+            {
+                return Ok(userList);
+            }
+            else
+            {
+                return StatusCode(400, "No user found.");
+            }
+        } 
         
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUserById(int id)
@@ -35,7 +40,7 @@ namespace DatingApp_Backend.Controllers
             }
             else
             {
-                return StatusCode(400,"user not found!"); 
+                return StatusCode(400,"User not found!"); 
             }
         }
 
