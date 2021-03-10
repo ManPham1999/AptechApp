@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.Data;
 using DatingApp.Entities;
+using DatingApp_Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,11 +14,13 @@ namespace DatingApp_Backend.Controllers
     {
         private DataContext _context;
 
+
         public UserController(DataContext context)
         {
             _context = context;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
@@ -30,7 +34,8 @@ namespace DatingApp_Backend.Controllers
                 return StatusCode(400, "No user found.");
             }
         } 
-        
+
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUserById(int id)
         {

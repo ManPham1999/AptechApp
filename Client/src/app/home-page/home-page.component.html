@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <div *ngIf="!this.registerMode" style="text-align: center">
+    <h1>Find your match</h1>
+    <p class="lead">View your match...just need to sign in...</p>
+    <div class="text-center">
+      <button (click)="onToggleRegister(!registerMode)" class="btn btn-primary btn-lg mr-2">Register</button>
+      <button class="btn btn-info btn-lg">Learn more</button>
+    </div>
+  </div>
+  <div class="container" *ngIf="this.registerMode">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <app-register [registerMode]="registerMode" (registerModeFormChild)="onToggleRegister($event)"></app-register>
+      </div>
+    </div>
+  </div>
+</div>
