@@ -1,6 +1,7 @@
 using System.Text;
 using DatingApp.Data;
 using DatingApp_Backend.Interfaces;
+using DatingApp_Backend.Middleware;
 using DatingApp_Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -46,10 +47,11 @@ namespace DatingApp_Backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            app.UseMiddleware<ExceptionMiddleWare>();
 
             app.UseHttpsRedirection();
 

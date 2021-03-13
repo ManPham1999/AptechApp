@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -11,37 +12,46 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   // muốn dùng obserable trong html thì phải dùng từ khóa public
-  constructor(public accountService: AccountService, private router: Router) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
   model: any = {};
-  isNotifi: boolean;
   loginError: string;
-  ngOnInit(): void {
-    this.loginError = null;
-    this.isNotifi = false;
+  username: string;
+  ngOnInit(): void {}
+  showSuccess(username?: string) {
+    this.toastr.success(`Hello ${username}`, 'Loggin successfully!');
   }
-  onCloseNotifi() {
-    setTimeout(() => {
-      this.isNotifi = false;
-    }, 3000);
+  showError(msg?: string) {
+    this.toastr.error(msg ? msg : this.loginError, 'Loggin fail!');
   }
-
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('');
   }
   login = () => {
-    this.accountService.login(this.model).subscribe(
-      (user) => {
-        this.isNotifi = true;
-        this.onCloseNotifi();
-        this.router.navigateByUrl('/members');
-      },
-      (err) => {
-        this.isNotifi = true;
-        this.loginError = err?.error;
-        this.onCloseNotifi();
+    if (!this.model.username && !this.model.password) {
+      this.showError('username and password is empty!');
+    } else {
+      if (!this.model.password) {
+        this.showError('password is empty!');
+      } else {
+        if (!this.model.username) {
+          this.showError('username is empty!');
+        }
+        this.accountService.login(this.model).subscribe(
+          (username) => {
+            this.router.navigateByUrl('/members');
+            this.showSuccess(username);
+          },
+          (err) => {
+            this.loginError = err?.error;
+            this.showError();
+          }
+        );
       }
-    );
-    this.loginError = null;
+    }
   };
 }
