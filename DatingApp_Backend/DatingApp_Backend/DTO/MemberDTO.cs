@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using DatingApp_Backend.Entities;
-using DatingApp_Backend.Extensions;
 
-namespace DatingApp.Entities
+namespace DatingApp_Backend.DTO
 {
-    public class AppUser
+    public class MemberDTO
     {
+        public MemberDTO()
+        {
+        }
         public int Id { get; set; }
         public string UserName { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public DateTime Dob { get; set; }
+        public string PhotoUrl { get; set; }
+        public int Age { get; set; }
         public string KnownAs { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.Now;
@@ -21,10 +22,6 @@ namespace DatingApp.Entities
         public string Interests { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-        public int GetAge()
-        {
-            return CalculateAge.CalculatedAge(Dob);
-        }
+        public ICollection<PhotoDTO> Photos { get; set; }
     }
 }

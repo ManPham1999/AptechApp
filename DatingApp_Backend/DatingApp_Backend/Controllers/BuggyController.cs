@@ -26,7 +26,6 @@ namespace DatingApp_Backend.Controllers
             return "secrete test";
         }
 
-        //[Authorize]
         [HttpGet("not-found")]
         public ActionResult<AppUser> GetNotFound()
         {
@@ -38,7 +37,6 @@ namespace DatingApp_Backend.Controllers
             return Ok(thing);
         }
 
-        //[Authorize]
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError()
         {

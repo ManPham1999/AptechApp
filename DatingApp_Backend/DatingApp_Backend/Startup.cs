@@ -1,5 +1,7 @@
 using System.Text;
 using DatingApp.Data;
+using DatingApp_Backend.Data;
+using DatingApp_Backend.Helper;
 using DatingApp_Backend.Interfaces;
 using DatingApp_Backend.Middleware;
 using DatingApp_Backend.Services;
@@ -35,7 +37,9 @@ namespace DatingApp_Backend
                     ValidateAudience = false
                 };
             });
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllers();
             services.AddCors();
             services.AddDbContext<DataContext>(options =>

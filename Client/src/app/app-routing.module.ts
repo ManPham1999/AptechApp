@@ -1,3 +1,6 @@
+import { ServerErrorComponent } from './error/server-error/server-error.component';
+import { NotFoundComponent } from './error/not-found/not-found.component';
+import { TestErrorComponent } from './error/test-error/test-error.component';
 import { AuthGuard } from './_guard/-auth.guard';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
@@ -9,10 +12,18 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
-  { path: 'members', component: MemberListComponent, canActivate: [AuthGuard] },
-  { path: 'members/:id', component: MemberDetailComponent , canActivate: [AuthGuard] },
-  { path: 'lists', component: ListsComponent , canActivate: [AuthGuard] },
-  { path: 'messages', component: MessagesComponent , canActivate: [AuthGuard] },
+  {
+    path: "",
+    runGuardsAndResolvers: "always",
+    canActivate: [AuthGuard],
+    children: [{ path: 'members', component: MemberListComponent, },
+    { path: 'members/:id', component: MemberDetailComponent, },
+    { path: 'lists', component: ListsComponent, },
+    { path: 'messages', component: MessagesComponent, }]
+  },
+  { path: 'error', component: TestErrorComponent },
+  { path: 'server-error', component: ServerErrorComponent },
+  { path: 'notFound', component: NotFoundComponent },
   { path: '**', component: HomePageComponent, pathMatch: 'full' },
 ];
 
@@ -20,4 +31,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
