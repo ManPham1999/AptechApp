@@ -1,3 +1,5 @@
-<ul *ngFor="let item of members">
-    <li>{{item.age}}</li>
-</ul>
+<div class="row">
+    <div *ngFor="let member of members" class="col-3">
+        <app-member-card [member]="member"></app-member-card>
+    </div>
+</div>

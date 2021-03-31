@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Entities;
 using DatingApp.Data;
+using DatingApp.Entities;
 using DatingApp_Backend.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +26,10 @@ namespace DatingApp_Backend
             try
             {
                 var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedUsers(context);
+                await Seed.SeedUsers(userManager, roleManager);
             }
             catch (Exception ex)
             {
@@ -36,6 +41,10 @@ namespace DatingApp_Backend
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddFile("Logs/dating-{Date}.txt");
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

@@ -1,3 +1,5 @@
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -28,6 +30,7 @@ import { MemberService } from './_services/member.service';
     RegisterComponent,
     MemberListComponent,
     MemberDetailComponent,
+    MemberCardComponent,
     ListsComponent,
     MessagesComponent,
     TestErrorComponent,
@@ -44,9 +47,13 @@ import { MemberService } from './_services/member.service';
       positionClass: 'toast-bottom-right',
     }),
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
   ],
-  providers: [AccountService, MemberService,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+  providers: [
+    AccountService,
+    MemberService,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

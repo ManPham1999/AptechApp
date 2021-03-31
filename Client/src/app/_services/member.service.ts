@@ -13,13 +13,12 @@ const httOptions = {
 })
 export class MemberService {
   baseUrl: string = environment.apiUrl;
-  username: string;
   constructor(private http: HttpClient) { }
 
   getMembers(): Observable<Member[]> {
     return this.http.get<Member[]>(`${this.baseUrl}/user`,httOptions);
   }
-  getMember(): Observable<Member> {
-    return this.http.get<Member>(`${this.baseUrl}/user/${this.username}`, httOptions);
+  getMember(username: string): Observable<Member> {
+    return this.http.get<Member>(`${this.baseUrl}/user/${username}`, httOptions);
   }
 }
